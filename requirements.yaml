@@ -4,6 +4,6 @@ dependencies:
     version: 1.4.0
     condition: mysql.enabled
   - name: postgresql
-    repository: https://kubernetes-charts.storage.googleapis.com
-    version: 7.6.0
+    repository: https://charts.bitnami.com/bitnami
+    version: 8.10.14
     condition: postgresql.enabled

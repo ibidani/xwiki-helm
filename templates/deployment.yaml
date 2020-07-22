@@ -4,11 +4,11 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
   {{- if .Values.mysql.enabled }}
-    app: "{{ .Values.image.name }}-{{ .Chart.AppVersion }}-lts-mysql-tomcat"
+    app: "xwiki-{{ .Chart.AppVersion }}-lts-mysql-tomcat"
   {{- else if .Values.postgresql.enabled }}
-    app: "{{ .Values.image.name }}-{{ .Chart.AppVersion }}-lts-postgres-tomcat"
+    app: "xwiki-{{ .Chart.AppVersion }}-lts-postgres-tomcat"
   {{- else }}
-    app: {{ .Values.image.name }}-{{ .Chart.AppVersion }}-{{ .Values.image.tag }}
+    app: xwiki-{{ .Chart.AppVersion }}-{{ .Values.image.tag }}
   {{- end }}
     version: "{{ .Chart.AppVersion }}"
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -22,14 +22,17 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
       - name: {{ .Chart.Name }}
       {{- if .Values.mysql.enabled }}
-        image: "{{ .Values.image.name }}:lts-mysql-tomcat"
+        image: "xwiki:lts-mysql-tomcat"
       {{- else if .Values.postgresql.enabled }}
-        image: "{{ .Values.image.name }}:lts-postgres-tomcat"
+        image: "iplaman/xwiki:12.5.1"
       {{- else }}
-        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+        image: xwiki:{{ .Values.image.tag }}
       {{- end }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:

@@ -18,7 +18,7 @@ resources:
     cpu: 3000m
     memory: 6000Mi
   requests:
-    cpu: 500m
+    cpu: 2000m
     memory: 3000Mi
 ##
 ## MySql chart configuration
@@ -27,7 +27,7 @@ resources:
 ##
 mysql:
  ## Whether to deploy a mysql server. Set false for a different database.
-  enabled: true
+  enabled: false
   mysqlRootPassword: xwiki
   mysqlUser: xwiki
   mysqlPassword: xwiki
@@ -52,7 +52,7 @@ mysql:
 ##
 postgresql:
  ## Whether to deploy a postgresql server. Set false for a different database.
-  enabled: false
+  enabled: true
   postgresqlUsername: xwiki
   postgresqlPassword: xwiki
   postgresqlDatabase: xwiki
@@ -81,11 +81,25 @@ solr:
   port: 8983
 
 # To use ingress for routing set ingress.enabled value to true and istio.enabled value to false
+# ingress:
+#   enabled: true
+#   issuer: dev-issuer
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+
+
 ingress:
   enabled: true
-  issuer: dev-issuer
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  # Used to create an Ingress record.
+  hosts:
+    - myxwiki.example.com
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  tls:
+    # Secrets must be manually created in the namespace.
+    - hosts:
+        - myxwiki.example.com
     #   ingress.kubernetes.io/rewrite-target: /
 
 # To use istio for routing set istio.enabled value to true and ingress.enabled value to false
